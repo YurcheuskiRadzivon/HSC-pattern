@@ -1,9 +1,9 @@
 package model
 
 type Property struct {
-	Id      int     `json:"id"`
-	Address Adrs    `json:"Address"`
-	Price   float64 `json:"Price"`
+	Id      int   `json:"id"`
+	Address Adrs  `json:"Address"`
+	Price   Price `json:"Price"`
 }
 
 type Adrs struct {
