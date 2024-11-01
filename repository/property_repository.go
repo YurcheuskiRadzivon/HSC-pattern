@@ -30,7 +30,9 @@ func NewPropertyRepository(dbUser, dbPassword, dbHost, dbPort, dbName string) (P
 
 }
 func (pr *propertyRepository) GetProperty(id int) (*model.Property, error) {
+
 	return nil, nil
+
 }
 func (pr *propertyRepository) InserProperty(Property model.Property) error {
 	return nil
