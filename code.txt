@@ -1,0 +1,183 @@
+package repository
+
+import (
+    "context"
+    "fmt"
+    "go-project/model"
+    "github.com/jackc/pgx/v4/pgxpool"
+    "log"
+)
+
+// Repository interface defines methods for accessing property data
+type PropertyRepository interface {
+    GetProperty(id int) (*model.Property, error)
+    InsertProperty(property model.Property) error
+}
+
+// propertyRepository struct implements the PropertyRepository interface
+type propertyRepository struct {
+    db *pgxpool.Pool
+}
+
+// NewPropertyRepository initializes and returns a new repository instance with a database connection
+func NewPropertyRepository(dbHost, dbPort, dbUser, dbPassword, dbName string) (PropertyRepository, error) {
+    // Create the DSN (Data Source Name) string for connecting to the PostgreSQL database
+    dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
+    
+    // Create a connection pool to the PostgreSQL database
+    db, err := pgxpool.Connect(context.Background(), dsn)
+    if err != nil {
+        log.Fatalf("Unable to connect to the database: %v", err)
+        return nil, err
+    }
+    
+    // Return a new repository instance with the database connection
+    return &propertyRepository{db: db}, nil
+}
+
+// GetProperty retrieves a property by its ID from the database
+func (r *propertyRepository) GetProperty(id int) (*model.Property, error) {
+    var property model.Property
+    query := `SELECT id, address, price, description FROM properties WHERE id=$1`
+    err := r.db.QueryRow(context.Background(), query, id).Scan(&property.ID, &property.Address, &property.Price, &property.Description)
+    if err != nil {
+        return nil, err
+    }
+    return &property, nil
+}
+
+// InsertProperty inserts a new property into the database
+func (r *propertyRepository) InsertProperty(property model.Property) error {
+    query := `INSERT INTO properties (address, price, description) VALUES ($1, $2, $3)`
+    _, err := r.db.Exec(context.Background(), query, property.Address, property.Price, property.Description)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+
+
+
+
+
+
+
+package controller
+
+import (
+    "context"
+    "real-estate-project/repository"
+    "real-estate-project/model"
+)
+
+// PropertyController interface defines methods for handling business logic related to properties
+type PropertyController interface {
+    GetProperty(ctx context.Context, id int) (*model.Property, error)
+    CreateProperty(ctx context.Context, address string, price float64, description string) error
+}
+
+// propertyController struct implements the PropertyController interface
+type propertyController struct {
+    repo repository.PropertyRepository
+}
+
+// NewPropertyController initializes and returns a new propertyController instance
+func NewPropertyController(repo repository.PropertyRepository) PropertyController {
+    return &propertyController{repo: repo}
+}
+
+// GetProperty retrieves the property details from the repository
+func (c *propertyController) GetProperty(ctx context.Context, id int) (*model.Property, error) {
+    property, err := c.repo.GetProperty(id)
+    if err != nil {
+        return nil, err
+    }
+    return property, nil
+}
+
+// CreateProperty creates a new property in the repository
+func (c *propertyController) CreateProperty(ctx context.Context, address string, price float64, description string) error {
+    property := model.Property{
+        Address:     address,
+        Price:       price,
+        Description: description,
+    }
+    return c.repo.InsertProperty(property)
+}
+
+
+
+
+
+
+
+
+
+package handler
+
+import (
+    "context"
+    "encoding/json"
+    "net/http"
+    "real-estate-project/controller"
+)
+// PropertyHandler interface defines the methods the handler must implement
+type PropertyHandler interface {
+    GetProperty(w http.ResponseWriter, r *http.Request)
+    CreateProperty(w http.ResponseWriter, r *http.Request)
+}
+// propertyHandler struct implements the PropertyHandler interface
+type propertyHandler struct {
+    controller controller.PropertyController
+    ctx context.Context
+}
+// NewPropertyHandler initializes and returns a new propertyHandler instance
+func NewPropertyHandler(controller controller.PropertyController) (PropertyHandler, error) {
+    return &propertyHandler{
+        controller: controller,
+        ctx: context.Background(),
+    }, nil
+}
+// GetProperty sends the property details as a JSON response
+func (h *propertyHandler) GetProperty(w http.ResponseWriter, r *http.Request) {
+    idStr := r.URL.Query().Get("id")
+    if idStr == "" {
+        http.Error(w, "Missing property ID", http.StatusBadRequest)
+        return
+    }
+    id, err := strconv.Atoi(idStr)
+    if err != nil {
+        http.Error(w, "Invalid property ID", http.StatusBadRequest)
+        return
+    }
+    property, err := h.controller.GetProperty(h.ctx, id)
+    if err != nil {
+        http.Error(w, "Failed to get property", http.StatusInternalServerError)
+        return
+    }
+    w.Header().Set("Content-Type", "application/json")
+    json.NewEncoder(w).Encode(property)
+}
+// CreateProperty handles the creation of a new property
+func (h *propertyHandler) CreateProperty(w http.ResponseWriter, r *http.Request) {
+    var req struct {
+        Address     string  `json:"address"`
+        Price       float64 `json:"price"`
+        Description string  `json:"description"`
+    }
+    if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+        http.Error(w, "Invalid request payload", http.StatusBadRequest)
+        return
+    }
+    if err := h.controller.CreateProperty(h.ctx, req.Address, req.Price, req.Description); err != nil {
+        http.Error(w, "Failed to create property", http.StatusInternalServerError)
+        return
+    }
+    w.WriteHeader(http.StatusCreated)
+}
+
+
+
+
+
