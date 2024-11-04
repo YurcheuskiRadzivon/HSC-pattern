@@ -1,0 +1,35 @@
+/project
+|-- /cmd
+|   |-- /app
+|       |-- main.go
+|
+|-- /pkg
+|   |-- /mymodule
+|       |-- module.go
+|
+|-- /internal
+|   |-- /mymodule
+|       |-- module.go
+|
+|-- /api
+|   |-- /handler
+|       |-- handler.go
+|
+|-- /configs
+|   |-- config.yaml
+|
+|-- /scripts
+|   |-- build.sh
+|
+|-- /web
+|   |-- /static
+|   |-- /templates
+|
+|-- /test
+|   |-- /integration
+|       |-- integration_test.go
+|   |-- /unit
+|       |-- unit_test.go
+|
+|-- go.mod
+|-- go.sum

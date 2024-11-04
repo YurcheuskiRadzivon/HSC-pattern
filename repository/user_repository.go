@@ -10,11 +10,11 @@ import (
 )
 
 type UserRepository interface {
-	GetUser(nickname string) (*model.User, error)
+	GetUser(nickname, email string) (*model.User, error)
 	InsertUser(User model.UserHash) error
 	UpdateUser(id int, User model.UserUpd) error
 	DeleteUser(id int) error
-	GetUserPassword(nickname string) ([]byte, error)
+	GetUserPassword(id int) ([]byte, error)
 }
 
 type userRepository struct {
@@ -30,10 +30,10 @@ func NewUserRepository(dbUser, dbPassword, dbHost, dbPort, dbName string) (UserR
 	}
 	return &userRepository{db: db}, nil
 }
-func (ur *userRepository) GetUser(nickname string) (*model.User, error) {
+func (ur *userRepository) GetUser(nickname, email string) (*model.User, error) {
 	var User model.User
-	query := `SELECT id,name,nickname,email FROM "user" WHERE nickname=$1 `
-	err := ur.db.QueryRow(context.Background(), query, User.Nickname).Scan(&User)
+	query := `SELECT id,name,nickname,email FROM "user" WHERE nickname=$1 AND email=$2 `
+	err := ur.db.QueryRow(context.Background(), query, User.Nickname, User.Email).Scan(&User)
 	if err != nil {
 		return nil, err
 	}
@@ -63,10 +63,10 @@ func (ur *userRepository) DeleteUser(id int) error {
 	}
 	return nil
 }
-func (ur *userRepository) GetUserPassword(nickname string) ([]byte, error) {
+func (ur *userRepository) GetUserPassword(id int) ([]byte, error) {
 	var hashedPassword []byte
-	query := `SELECT password FROM "user" WHERE nickname = $1`
-	err := ur.db.QueryRow(context.Background(), query, nickname).Scan(&hashedPassword)
+	query := `SELECT password FROM "user" WHERE id = $1`
+	err := ur.db.QueryRow(context.Background(), query, id).Scan(&hashedPassword)
 	if err != nil {
 		return nil, err
 	}

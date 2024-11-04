@@ -8,7 +8,6 @@ type User struct {
 	Password string `json:"password"`
 }
 type UserHash struct {
-	ID       int    `json:"id,omitempy"`
 	Name     string `json:"name"`
 	Nickname string `json:"nickname"`
 	Email    string `json:"email"`
