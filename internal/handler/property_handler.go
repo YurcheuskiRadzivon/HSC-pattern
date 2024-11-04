@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/YurcheuskiRadzivon/HSC-pattern/controller"
+	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/controller"
 )
 
 type PropertyHandler interface {

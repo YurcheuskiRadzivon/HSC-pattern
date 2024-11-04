@@ -4,9 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/YurcheuskiRadzivon/HSC-pattern/jwt_service"
+	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/jwt_service"
+	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/repository"
 	"github.com/YurcheuskiRadzivon/HSC-pattern/model"
-	"github.com/YurcheuskiRadzivon/HSC-pattern/repository"
+
 	"github.com/golang-jwt/jwt"
 	"golang.org/x/crypto/bcrypt"
 )

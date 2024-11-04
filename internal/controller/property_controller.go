@@ -3,8 +3,8 @@ package controller
 import (
 	"context"
 
+	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/repository"
 	"github.com/YurcheuskiRadzivon/HSC-pattern/model"
-	"github.com/YurcheuskiRadzivon/HSC-pattern/repository"
 )
 
 type PropertyController interface {
