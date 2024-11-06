@@ -4,6 +4,7 @@
 func (pr *propertyRepository) DeleteProperty(id int) error {
 	return nil
 }
+
 CREATE TABLE Adrs (
     Id SERIAL PRIMARY KEY,
     Country TEXT NOT NULL,
@@ -12,18 +13,31 @@ CREATE TABLE Adrs (
     NumOfHome TEXT NOT NULL
 );
 
+
 CREATE TABLE Price (
     Id SERIAL PRIMARY KEY,
     Value FLOAT NOT NULL,
     Currency TEXT NOT NULL
 );
 
+
+CREATE TABLE "User" (
+    ID SERIAL PRIMARY KEY,
+    Name TEXT NOT NULL,
+    Nickname TEXT NOT NULL,
+    Email TEXT NOT NULL,
+    Password BYTEA NOT NULL
+);
+
+
 CREATE TABLE Property (
     Id SERIAL PRIMARY KEY,
     AddressId INTEGER NOT NULL,
     PriceId INTEGER NOT NULL,
+    UserId INTEGER NOT NULL,
     FOREIGN KEY (AddressId) REFERENCES Adrs(Id) ON DELETE CASCADE,
-    FOREIGN KEY (PriceId) REFERENCES Price(Id) ON DELETE CASCADE
+    FOREIGN KEY (PriceId) REFERENCES Price(Id) ON DELETE CASCADE,
+    FOREIGN KEY (UserId) REFERENCES "User"(ID) ON DELETE CASCADE
 );
 
 

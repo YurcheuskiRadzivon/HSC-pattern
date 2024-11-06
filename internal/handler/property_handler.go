@@ -17,6 +17,13 @@ type propertyHandler struct {
 	ctx        context.Context
 }
 
+func NewPropertyHandler(controller controller.PropertyController) PropertyHandler {
+	return &propertyHandler{
+		controller: controller,
+		ctx:        context.Background(),
+	}
+}
+
 func (ph *propertyHandler) GetProperty(w http.ResponseWriter, r *http.Request) {
 
 }

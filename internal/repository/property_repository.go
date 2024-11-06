@@ -11,7 +11,7 @@ import (
 
 type PropertyRepository interface {
 	GetProperty(id int) (*model.Property, error)
-	InserProperty(Property *model.Property) error
+	InsertProperty(Property *model.Property) error
 	//UpdateProperty(id int, Property model.Property) error
 	//DeleteProperty(id int) error
 }
@@ -34,6 +34,7 @@ func (pr *propertyRepository) GetProperty(id int) (*model.Property, error) {
 	query := `
     SELECT
     p.Id AS PropertyId,
+    p.UserId,
     a.Country,
     a.City,
     a.Street,
@@ -47,17 +48,17 @@ JOIN
 JOIN
     Price pr ON p.PriceId = pr.Id
 WHERE 
-    p.Id=$1;`
-	err := pr.db.QueryRow(context.Background(), query, id).Scan(&Property.Id, &Property.Address.Country, &Property.Address.City, &Property.Address.Street, &Property.Address.NumOfHome, &Property.Price.Value, &Property.Price.Currency)
+    p.Id = $1;
+`
+	err := pr.db.QueryRow(context.Background(), query, id).Scan(&Property.Id, &Property.UserId, &Property.Address.Country, &Property.Address.City, &Property.Address.Street, &Property.Address.NumOfHome, &Property.Price.Value, &Property.Price.Currency)
 	if err != nil {
 		return nil, err
 	}
 	return Property, nil
 }
-func (pr *propertyRepository) InserProperty(Property *model.Property) error {
+func (pr *propertyRepository) InsertProperty(Property *model.Property) error {
 
 	query := `BEGIN;
-
 
 WITH adrs_insert AS (
     INSERT INTO Adrs (Country, City, Street, NumOfHome)
@@ -65,20 +66,19 @@ WITH adrs_insert AS (
     RETURNING Id AS AddressId
 ),
 
-
 price_insert AS (
     INSERT INTO Price (Value, Currency)
-    VALUES (($5, $6)
+    VALUES ($5, $6)
     RETURNING Id AS PriceId
 )
 
-
-INSERT INTO Property (AddressId, PriceId)
-SELECT AddressId, PriceId
+INSERT INTO Property (AddressId, PriceId, UserId)
+SELECT AddressId, PriceId, $7
 FROM adrs_insert, price_insert;
 
-COMMIT;`
-	_, err := pr.db.Exec(context.Background(), query, Property.Address.Country, Property.Address.City, Property.Address.Street, Property.Address.NumOfHome, Property.Price.Value, Property.Price.Currency)
+COMMIT;
+`
+	_, err := pr.db.Exec(context.Background(), query, Property.Address.Country, Property.Address.City, Property.Address.Street, Property.Address.NumOfHome, Property.Price.Value, Property.Price.Currency, Property.UserId)
 	if err != nil {
 		return err
 	}

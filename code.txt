@@ -8,34 +8,33 @@ import (
     "log"
 )
 
-// Repository interface defines methods for accessing property data
+
 type PropertyRepository interface {
     GetProperty(id int) (*model.Property, error)
     InsertProperty(property model.Property) error
 }
 
-// propertyRepository struct implements the PropertyRepository interface
+
 type propertyRepository struct {
     db *pgxpool.Pool
 }
 
-// NewPropertyRepository initializes and returns a new repository instance with a database connection
+
 func NewPropertyRepository(dbHost, dbPort, dbUser, dbPassword, dbName string) (PropertyRepository, error) {
-    // Create the DSN (Data Source Name) string for connecting to the PostgreSQL database
+    
     dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
     
-    // Create a connection pool to the PostgreSQL database
+    
     db, err := pgxpool.Connect(context.Background(), dsn)
     if err != nil {
         log.Fatalf("Unable to connect to the database: %v", err)
         return nil, err
     }
     
-    // Return a new repository instance with the database connection
     return &propertyRepository{db: db}, nil
 }
 
-// GetProperty retrieves a property by its ID from the database
+
 func (r *propertyRepository) GetProperty(id int) (*model.Property, error) {
     var property model.Property
     query := `SELECT id, address, price, description FROM properties WHERE id=$1`
@@ -46,7 +45,7 @@ func (r *propertyRepository) GetProperty(id int) (*model.Property, error) {
     return &property, nil
 }
 
-// InsertProperty inserts a new property into the database
+
 func (r *propertyRepository) InsertProperty(property model.Property) error {
     query := `INSERT INTO properties (address, price, description) VALUES ($1, $2, $3)`
     _, err := r.db.Exec(context.Background(), query, property.Address, property.Price, property.Description)
@@ -71,23 +70,22 @@ import (
     "real-estate-project/model"
 )
 
-// PropertyController interface defines methods for handling business logic related to properties
+
 type PropertyController interface {
     GetProperty(ctx context.Context, id int) (*model.Property, error)
     CreateProperty(ctx context.Context, address string, price float64, description string) error
 }
 
-// propertyController struct implements the PropertyController interface
+
 type propertyController struct {
     repo repository.PropertyRepository
 }
 
-// NewPropertyController initializes and returns a new propertyController instance
 func NewPropertyController(repo repository.PropertyRepository) PropertyController {
     return &propertyController{repo: repo}
 }
 
-// GetProperty retrieves the property details from the repository
+
 func (c *propertyController) GetProperty(ctx context.Context, id int) (*model.Property, error) {
     property, err := c.repo.GetProperty(id)
     if err != nil {
@@ -96,7 +94,7 @@ func (c *propertyController) GetProperty(ctx context.Context, id int) (*model.Pr
     return property, nil
 }
 
-// CreateProperty creates a new property in the repository
+
 func (c *propertyController) CreateProperty(ctx context.Context, address string, price float64, description string) error {
     property := model.Property{
         Address:     address,
@@ -179,5 +177,18 @@ func (h *propertyHandler) CreateProperty(w http.ResponseWriter, r *http.Request)
 
 
 
+Structure fiber methods
+app.Method(path string,...func(*fiber.Ctx)error)
+Static files
+app.Static(prefix,root string,config ...Static)
+config is settings for Static files
+for exmpl
+config:= fiber.Static{
+    CacheDuration: 30 * time.Second, // Кеширование на 30 секунд
+    Compress: true, // Включить сжатие
+    Browse: true, // Включить обзор директорий
+    Index: "index.html", // Файл по умолчанию
+}
+app.Static("/static","./public",config)
 
 

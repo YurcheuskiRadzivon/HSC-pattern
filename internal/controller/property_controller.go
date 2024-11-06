@@ -27,7 +27,7 @@ func (pc *propertyController) GetProperty(ctx context.Context, id int) (*model.P
 	return Property, nil
 }
 func (pc *propertyController) InserProperty(ctx context.Context, Property *model.Property) error {
-	err := pc.repo.InserProperty(Property)
+	err := pc.repo.InsertProperty(Property)
 	if err != nil {
 		return err
 	}

@@ -20,6 +20,13 @@ type userHandler struct {
 	controller controller.UserController
 }
 
+func NeeUserHandler(controller controller.UserController) UserHandler {
+	return &userHandler{
+		controller: controller,
+		ctx:        context.Background(),
+	}
+
+}
 func (us *userHandler) GetUser(w http.ResponseWriter, r *http.Request) {
 
 }
