@@ -45,9 +45,9 @@ body {
     padding: 13px;
     display: flex;
     flex-direction: column;
-    
+
     width: 100%;
-    
+
 
 }
 
@@ -57,12 +57,14 @@ body {
     margin-top: 50px;
     padding: 0 20px;
 }
-.header{
+
+.header {
     display: flex;
     flex-direction: row;
     height: 100px;
 }
-.menu{
+
+.menu {
 
     list-style: none;
     display: flex;
@@ -70,16 +72,18 @@ body {
     width: 78%;
     justify-content: right;
 }
-.menu li{
+
+.menu li {
     display: flex;
     align-items: center;
 }
-.menu a{
+
+.menu a {
     font-size: 20px;
     text-decoration: none;
     color: #ffffff;
     padding: 12px;
-    
+
 }
 
 #register_form {

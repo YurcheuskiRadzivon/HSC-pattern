@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('registerForm');
+    const form = document.getElementById('register_form');
 
     form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const password = document.getElementById('password').value;
 
 
-        if (name === '' || nickname==='' || email === '' || password === '') {
+        if (name === '' || nickname === '' || email === '' || password === '') {
             alert('All fields are required');
             return;
         }
@@ -28,38 +28,34 @@ document.addEventListener('DOMContentLoaded', function () {
         }*/
 
         const data = {
-            name: name,
-            nickname: nickname,
-            email: email,
-            password: password
+            name: name, nickname: nickname, email: email, password: password
         };
 
-        fetch('/registration', {
-            method: 'POST',
-            headers: {
+        fetch('/register', {
+            method: 'POST', headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            }, body: JSON.stringify(data)
         })
             .then(response => response.json())
             .then(result => {
                 if (result.error) {
                     alert(result.error);
                 } else {
-                    alert("Registration was successful");
+                    alert(result.message);
                     window.location.href = '/login';
                 }
             })
-            .catch(error => {
-                alert(`Error: ${error}`);
-                window.location.href = '/';
-            });
+        /*.catch(error => {
+            alert(`Error: ${error}`);
+            window.location.href = '/';
+        });*/
     });
 
     function validateEmail(email) {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(String(email).toLowerCase());
     }
+
     /* function validateUsername(username) {
          const re = /^[a-zA-Z0-9а-яА-Я]+$/;
          return re.test(username);

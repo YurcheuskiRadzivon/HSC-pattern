@@ -45,9 +45,9 @@ body {
     padding: 13px;
     display: flex;
     flex-direction: column;
-    
+
     width: 100%;
-    
+
 
 }
 
@@ -57,12 +57,14 @@ body {
     margin-top: 50px;
     padding: 0 20px;
 }
-.header{
+
+.header {
     display: flex;
     flex-direction: row;
     height: 100px;
 }
-.menu{
+
+.menu {
 
     list-style: none;
     display: flex;
@@ -70,48 +72,48 @@ body {
     width: 78%;
     justify-content: right;
 }
-.menu li{
+
+.menu li {
     display: flex;
     align-items: center;
 }
-.menu a{
+
+.menu a {
     font-size: 20px;
     text-decoration: none;
     color: #ffffff;
     padding: 12px;
-    
-}
- 
-.register_form {
-  --bg-light: #efefef;
-  --bg-dark: #707070;
-  --clr: #ffffff;
-  --clr-alpha: #9c9c9c60;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
-  height: 80vh;
-  justify-content: center;
-  align-items: center;
-  margin: 30px,0,0,0;
+
 }
 
 
-  
-  .register_form .input-span {
+#login_form {
+    margin: 15px;
+    --bg-light: #efefef;
+    --bg-dark: #707070;
+    --clr: #ffffff;
+    --clr-alpha: #9c9c9c60;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    height: 80vh;
+    justify-content: center;
+    align-items: center;
+}
+
+#login_form .input-span {
     width: 70%;
     max-width: 400px;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     color: white;
-  }
-  
-  .register_form input[type="nickname"],
-  .register_form input[type="name"],
-  .register_form input[type="email"],
-  .register_form input[type="password"] {
+}
+
+
+#login_form input[type="email"],
+#login_form input[type="password"] {
     border-radius: 0.5rem;
     padding: 1rem 0.75rem;
     width: 100%;
@@ -122,22 +124,21 @@ body {
     background-color: var(--clr-alpha);
     outline: 2px solid var(--bg-dark);
     color: white;
-  }
-  
-  .register_form input[type="nickname"],
-  .register_form input[type="name"],
-  .register_form input[type="email"],
-  .register_form input[type="password"] {
+}
+
+
+#login_form input[type="email"],
+#login_form input[type="password"] {
     outline: 2px solid var(--clr);
-  }
-  
-  .label {
+}
+
+.label {
     align-self: flex-start;
     color: var(--clr);
     font-weight: 600;
-  }
-  
-  .register_form .submit {
+}
+
+#login_form .submit {
     padding: 1rem 0.75rem;
     width: 27%;
     display: flex;
@@ -151,29 +152,32 @@ body {
     transition: all 300ms;
     font-weight: 600;
     font-size: 0.9rem;
-  }
-  
-  .register_form .submit:hover {
+}
+
+#login_form .submit:hover {
     background-color: var(--clr);
     color: var(--bg-dark);
-  }
-  
-  .span {
+}
+
+
+.span {
     text-decoration: none;
     color: var(--bg-dark);
-  }
+}
 
-  
-  .span a {
+
+.span a {
     color: var(--clr);
-  }
-  .end_form{
+}
+
+.end_form {
     text-decoration: none;
     color: #fffefe6d;
-  }
-  .end_form a{
+}
+
+.end_form a {
     text-decoration: none;
     color: #ffffff;
-  }
+}
 
   

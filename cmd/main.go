@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/controller"
 	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/handler"
-	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/repository"
 	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,11 +10,11 @@ import (
 )
 
 func main() {
-	userRepo, err := repository.NewUserRepository("asd", "", "", "", "")
-	if err != nil {
-		println(err)
-	}
-	userController := controller.NewUserController(userRepo)
+	//userRepo, err := repository.NewUserRepository("asd", "", "", "", "")
+	//if err != nil {
+	//println(err)
+	//}
+	userController := controller.NewUserController(nil)
 	userHandler := handler.NewUserHandler(userController)
 	htmlengine := html.New("../web/templates", ".html")
 	app := fiber.New(fiber.Config{

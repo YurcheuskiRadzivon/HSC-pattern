@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"fmt"
 	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/controller"
 	"github.com/YurcheuskiRadzivon/HSC-pattern/model"
 	"github.com/gofiber/fiber/v2"
@@ -33,9 +34,9 @@ func (us *userHandler) GetUser(c *fiber.Ctx) error {
 func (us *userHandler) InsertUser(c *fiber.Ctx) error {
 	var User model.User
 	if err := c.BodyParser(&User); err != nil {
-		return c.SendString("Error ")
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
-
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": fmt.Sprintf("%v,%v,%v,%v", User.Nickname, User.Name, User.Email, User.Password)})
 }
 func (us *userHandler) UpdateUser(c *fiber.Ctx) error {
 	return nil
