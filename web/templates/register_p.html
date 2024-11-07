@@ -20,23 +20,26 @@
             </ul>
         </div>
 
-        <form class="form">
+        <form id="register_form" action="/register" method="post">
+    <span class="input-span">
+        <label for="name" class="label">Name</label>
+        <input type="name" name="name" id="name" />
+    </span>
             <span class="input-span">
-                <label for="name" class="label">Name</label>
-                <input type="name" name="name" id="name" /></span>
+        <label for="Nickname" class="label">Nickname</label>
+        <input type="Nickname" name="Nickname" id="nickname" />
+    </span>
             <span class="input-span">
-                <label for="Nickname" class="label">Nickname</label>
-                <input type="Nickname" name="Nickname" id="Nickname" /></span>
+        <label for="email" class="label">Email</label>
+        <input type="email" name="email" id="email" />
+    </span>
             <span class="input-span">
-                <label for="email" class="label">Email</label>
-                <input type="email" name="email" id="email" /></span>
-            <span class="input-span">
-                <label for="password" class="label">Password</label>
-                <input type="password" name="password" id="password" /></span>
-            
+        <label for="password" class="label">Password</label>
+        <input type="password" name="password" id="password" />
+    </span>
             <input class="submit" type="submit" value="Sign Up" />
-            
         </form>
+
 
 
     </div>

@@ -15,15 +15,18 @@ import (
 type UserController interface {
 	GetUser(ctx context.Context, nickname, email string) (*model.User, error)
 	InsertUser(ctx context.Context, User model.User) error
-	UpdateUser(ctx context.Context, id int, UserUp model.UserUpd) error
+	UpdateUser(ctx context.Context, id int, UserUp model.UserUpd) (string, error)
 	DeleteUser(ctx context.Context, id int) error
 	GetUserPassword(ctx context.Context, id int) ([]byte, error)
-	LoginUser(ctx context.Context, User *model.User) error
+	LoginUser(ctx context.Context, User *model.User) (string, error)
 }
 type userController struct {
 	repo repository.UserRepository
 }
 
+func NewUserController(repo repository.UserRepository) UserController {
+	return &userController{repo: repo}
+}
 func (uc *userController) GetUser(ctx context.Context, nickname, email string) (*model.User, error) {
 	User, err := uc.repo.GetUser(nickname, email)
 	if err != nil {
