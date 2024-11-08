@@ -111,7 +111,7 @@ body {
     color: white;
 }
 
-
+#login_form input[type="nickname"],
 #login_form input[type="email"],
 #login_form input[type="password"] {
     border-radius: 0.5rem;
@@ -126,7 +126,7 @@ body {
     color: white;
 }
 
-
+#login_form input[type="nickname"],
 #login_form input[type="email"],
 #login_form input[type="password"] {
     outline: 2px solid var(--clr);

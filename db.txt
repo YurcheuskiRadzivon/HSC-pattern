@@ -85,3 +85,104 @@ JOIN
 
 
 */
+///////////////////////////////////////////////////////////////////
+Create tables
+BEGIN;
+
+CREATE TABLE IF NOT EXISTS Address (
+    Id SERIAL PRIMARY KEY,
+    Country VARCHAR(40) NOT NULL,
+    City VARCHAR(40) NOT NULL,
+    Street VARCHAR(40) NOT NULL,
+    NumOfHome INTEGER NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS Price (
+    Id SERIAL PRIMARY KEY,
+    Value FLOAT NOT NULL,
+    Currency VARCHAR(5) NOT NULL
+);
+
+
+CREATE TABLE IF NOT EXISTS "User" (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(40) NOT NULL,
+    Nickname VARCHAR(10) UNIQUE NOT NULL,
+    Email VARCHAR(319) UNIQUE NOT NULL,
+    Password BYTEA NOT NULL
+);
+
+
+CREATE TABLE Property (
+    Id SERIAL PRIMARY KEY,
+    AddressId INTEGER NOT NULL,
+    PriceId INTEGER NOT NULL,
+    UserId INTEGER NOT NULL,
+    FOREIGN KEY (AddressId) REFERENCES Address(Id) ON DELETE CASCADE,
+    FOREIGN KEY (PriceId) REFERENCES Price(Id) ON DELETE CASCADE,
+    FOREIGN KEY (UserId) REFERENCES "User"(ID) ON DELETE CASCADE
+);
+
+COMMIT;
+////////////////////////////////////////////////////////////////////////////////////////////////
+insert Property
+
+BEGIN;
+
+
+WITH adrs_insert AS (
+    INSERT INTO Address (Country, City, Street, NumOfHome)
+    VALUES ('USA', 'New York', '5th Avenue', '10A')
+    RETURNING Id AS AddressId
+),
+
+
+price_insert AS (
+    INSERT INTO Price (Value, Currency)
+    VALUES (1000000.0, 'USD')
+    RETURNING Id AS PriceId
+)
+
+
+INSERT INTO Property (AddressId, PriceId, UserId)
+SELECT AddressId, PriceId, 1
+FROM adrs_insert, price_insert;
+
+COMMIT;
+/////////////////////////////////////////////////////////////////////////////////////
+insert User
+INSERT INTO "User"(name,nickname,email,password) VALUES('sdsd','sdsdssd','sdsdssdd',decode('313233343536', 'hex'))
+/////////////////////////////////////////////////////////////////////////////////////
+select User
+SELECT id,name,nickname,email FROM "User" WHERE nickname='sdsdssd' AND email='sdsdssdd'
+///////////////////////////////////////////////////////////////////////////////////////
+update User
+UPDATE "User" SET name='d', nickname='sd', email='sdsd' WHERE id=1
+///////////////////////////////////////////////////////////////////////////////////////
+delete User
+DELETE FROM "User" WHERE id=1
+///////////////////////////////////////////////////////////////////////////////////////
+select password
+SELECT password FROM "User" WHERE id = 2
+////////////////////////////////////////////////////////////////////////////////////////////
+select property
+SELECT
+    p.Id AS PropertyId,
+    p.UserId,
+    a.Country,
+    a.City,
+    a.Street,
+    a.NumOfHome,
+    pr.Value,
+    pr.Currency
+FROM
+    Property p
+JOIN
+    Address a ON p.AddressId = a.Id
+JOIN
+    Price pr ON p.PriceId = pr.Id
+WHERE
+    p.Id = 1;
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+

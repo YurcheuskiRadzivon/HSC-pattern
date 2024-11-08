@@ -5,14 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b174659c-c375-4286-8fd9-007ead467801" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/api/routes/routes.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/config_test.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/internal/hsc_helpers/initializer.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/static/js/login_p.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/internal/handler/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/handler/user_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/my_app/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs/db.json" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.txt" beforeDir="false" afterPath="$PROJECT_DIR$/db.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/controller/user_controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/controller/user_controller.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/handler/property_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/property_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/handler/user_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/handler/user_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/repository/property_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/repository/property_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/repository/user_repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/repository/user_repository.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/user.go" beforeDir="false" afterPath="$PROJECT_DIR$/model/user.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/static/css/login_p.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/static/css/login_p.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/static/css/register_p.css" beforeDir="false" afterPath="$PROJECT_DIR$/web/static/css/register_p.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/static/js/register_p.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/static/js/register_p.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/templates/login_p.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/templates/login_p.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/templates/register_p.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/templates/register_p.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +33,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Go File" />
         <option value="JavaScript File" />
       </list>
     </option>
@@ -38,25 +50,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Go Build.go build github.com/YurcheuskiRadzivon/HSC-pattern.executor&quot;: &quot;Run&quot;,
-    &quot;Go Build.go build github.com/YurcheuskiRadzivon/HSC-pattern/cmd.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.automatic.dependencies.download&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/gitPr/to_do_app&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultGoTemplateProperty": "Go File",
+    "Go Build.go build github.com/YurcheuskiRadzivon/HSC-pattern.executor": "Run",
+    "Go Build.go build github.com/YurcheuskiRadzivon/HSC-pattern/cmd.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.automatic.dependencies.download": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "git-widget-placeholder": "main",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "D:/gitPr/to_do_app",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\gitPr\test_platform\HSC-pattern\cmd\my_app" />
+      <recent name="D:\gitPr\test_platform\HSC-pattern\api" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="go build github.com/YurcheuskiRadzivon/HSC-pattern/cmd" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
       <module name="HSC-pattern" />

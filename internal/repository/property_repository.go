@@ -19,8 +19,8 @@ type propertyRepository struct {
 	db *pgxpool.Pool
 }
 
-func NewPropertyRepository(dbUser, dbPassword, dbHost, dbPort, dbName string) (PropertyRepository, error) {
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
+func NewPropertyRepository(dsnStr string) (PropertyRepository, error) {
+	dsn := fmt.Sprintf(dsnStr)
 	db, err := pgxpool.Connect(context.Background(), dsn)
 	if err != nil {
 		log.Fatalf("Unable to connect to the database: %v", err)

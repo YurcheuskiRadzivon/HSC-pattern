@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/login_p.css">
+    <script src="/js/login_p.js"></script>
     <title>Home</title>
 </head>
 
@@ -20,8 +21,12 @@
             </ul>
         </div>
 
-        <form id="login_form">
-    <span class="input-span">
+        <form id="login_form" action="/login" method="post">
+            <span class="input-span">
+        <label for="Nickname" class="label">Nickname</label>
+        <input type="Nickname" name="Nickname" id="nickname"/>
+    </span>
+            <span class="input-span">
         <label for="email" class="label">Email</label>
         <input type="email" name="email" id="email"/>
     </span>

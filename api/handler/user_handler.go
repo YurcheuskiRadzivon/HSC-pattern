@@ -36,7 +36,11 @@ func (us *userHandler) InsertUser(c *fiber.Ctx) error {
 	if err := c.BodyParser(&User); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": fmt.Sprintf("%v,%v,%v,%v", User.Nickname, User.Name, User.Email, User.Password)})
+	if err := us.controller.InsertUser(c.Context(), User); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"message": "successfully"})
 }
 func (us *userHandler) UpdateUser(c *fiber.Ctx) error {
 	return nil
@@ -48,5 +52,16 @@ func (us *userHandler) GetUserPassword(c *fiber.Ctx) error {
 	return nil
 }
 func (us *userHandler) LoginUser(c *fiber.Ctx) error {
-	return nil
+	var User model.User
+	if err := c.BodyParser(&User); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
+	}
+	jwtStr, err := us.controller.LoginUser(c.Context(), &User)
+
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": fmt.Sprintf("%s", err)})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"token": fmt.Sprintf("%s", jwtStr)})
+
 }

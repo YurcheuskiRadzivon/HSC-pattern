@@ -21,8 +21,8 @@ type userRepository struct {
 	db *pgxpool.Pool
 }
 
-func NewUserRepository(dbUser, dbPassword, dbHost, dbPort, dbName string) (UserRepository, error) {
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", dbUser, dbPassword, dbHost, dbPort, dbName)
+func NewUserRepository(dsnStr string) (UserRepository, error) {
+	dsn := fmt.Sprintf(dsnStr)
 	db, err := pgxpool.Connect(context.Background(), dsn)
 	if err != nil {
 		log.Fatalf("Unable to connect to the database: %v", err)
@@ -32,15 +32,15 @@ func NewUserRepository(dbUser, dbPassword, dbHost, dbPort, dbName string) (UserR
 }
 func (ur *userRepository) GetUser(nickname, email string) (*model.User, error) {
 	var User model.User
-	query := `SELECT id,name,nickname,email FROM "user" WHERE nickname=$1 AND email=$2 `
-	err := ur.db.QueryRow(context.Background(), query, User.Nickname, User.Email).Scan(&User)
+	query := `SELECT id,name,nickname,email FROM "User" WHERE nickname=$1 AND email=$2 `
+	err := ur.db.QueryRow(context.Background(), query, nickname, email).Scan(&User.ID, &User.Name, &User.Nickname, &User.Email)
 	if err != nil {
 		return nil, err
 	}
 	return &User, nil
 }
 func (ur *userRepository) InsertUser(User model.UserHash) error {
-	query := `INSERT INTO "user"(name,nickname,email,password) VALUES($1,$2,$3,$4)`
+	query := `INSERT INTO "User"(name,nickname,email,password) VALUES($1,$2,$3,$4)`
 	_, err := ur.db.Exec(context.Background(), query, User.Name, User.Nickname, User.Email, User.Password)
 	if err != nil {
 		return err
@@ -65,7 +65,7 @@ func (ur *userRepository) DeleteUser(id int) error {
 }
 func (ur *userRepository) GetUserPassword(id int) ([]byte, error) {
 	var hashedPassword []byte
-	query := `SELECT password FROM "user" WHERE id = $1`
+	query := `SELECT password FROM "User" WHERE id = $1`
 	err := ur.db.QueryRow(context.Background(), query, id).Scan(&hashedPassword)
 	if err != nil {
 		return nil, err

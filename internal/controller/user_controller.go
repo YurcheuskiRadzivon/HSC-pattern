@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/YurcheuskiRadzivon/HSC-pattern/internal/jwt_service"
@@ -38,7 +39,7 @@ func (uc *userController) InsertUser(ctx context.Context, User model.User) error
 	var UserH model.UserHash
 	UserH.Name, UserH.Email, UserH.Nickname = User.Name, User.Email, User.Nickname
 	var pass []byte
-	pass, err := bcrypt.GenerateFromPassword([]byte(UserH.Password), bcrypt.DefaultCost)
+	pass, err := bcrypt.GenerateFromPassword([]byte(User.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
@@ -83,16 +84,17 @@ func (uc *userController) GetUserPassword(ctx context.Context, id int) ([]byte, 
 }
 func (uc *userController) LoginUser(ctx context.Context, User *model.User) (string, error) {
 	U, err := uc.repo.GetUser(User.Nickname, User.Email)
+
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("%s", err)
 	}
 	pass, err := uc.GetUserPassword(ctx, U.ID)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("%s", err)
 	}
 
 	if err := bcrypt.CompareHashAndPassword(pass, []byte(User.Password)); err != nil {
-		return "", err
+		return "", fmt.Errorf("%s", err)
 	}
 	payload := jwt.MapClaims{
 
@@ -103,7 +105,7 @@ func (uc *userController) LoginUser(ctx context.Context, User *model.User) (stri
 	}
 	t, err := jwt_service.CreateToken(payload)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("4%s", err)
 	}
 	return t, nil
 
